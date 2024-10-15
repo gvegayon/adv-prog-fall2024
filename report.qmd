@@ -1,15 +1,39 @@
 ---
 format: pdf
-author: John Doe
-title: My fancy presentation
+author: George G. Vega Yon
+title: Implementing bi-level matching optimization with propensity score
 subtitle: For PHS 7045
 ---
 
-# Section 1
+# Introduction
 
-## Sub-section 1
+Matching algorithms for causal inference are a fundamental tool in biomedical sciences. Nonetheless problems about optimal matching strategies, balance, and related issues are still open. In this report, I will introduce an implementation of the bi-level matching optimization algorithm published by XYZ and show how it can be used to improve the balance of covariates in a dataset, particularly, looking into the propensity score matching.
+
+# Description of the solution
+
+To address the problem, we will be implementing the algorithm using C++ via Rcpp in R. The algorithm will be implemented in the following steps:
+
+1. Compute propensity scores using a logistic regression in R.
+2. Use the propensity scores to do a 1:2 matching for generating the counterfactuals.
+3. Return the results of the matching a list with: (a) a two column matrix showing the idx of the matched pairs, and (b) the matched estimator.
+
+
+# Results
 
 ```{r}
-#| label: some-code
-library(MASS)
+library(Rcpp)
+
+# Simulating some data
+n <- 1000
+set.seed(3112)
+group <- sample.int(2, n, replace = TRUE) - 1
+X <- runif(n) # Simulating propensity score
+Y <- rnorm(n) # simulating outcome
+
+sourceCpp("match.cpp", cacheDir = "cache")
+ans <- match_it(
+  X = X,
+  group = group,
+  Y = Y  
+)
 ```
