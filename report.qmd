@@ -21,6 +21,7 @@ To address the problem, we will be implementing the algorithm using C++ via Rcpp
 # Results
 
 ```{r}
+#| label: Generating some data
 library(Rcpp)
 
 # Simulating some data
@@ -29,11 +30,26 @@ set.seed(3112)
 group <- sample.int(2, n, replace = TRUE) - 1
 X <- runif(n) # Simulating propensity score
 Y <- rnorm(n) # simulating outcome
+```
 
+```{r}
+#| label: run-the-match
 sourceCpp("match.cpp", cacheDir = "cache")
 ans <- match_it(
   X = X,
   group = group,
   Y = Y  
 )
+```
+
+The following figure shows how the match works for the first ten observations. Red and black points should match!
+
+```{r}
+#| label: Visualize
+
+# Looking into the first 10
+plot(X[1:10])
+points(X[ans$matches[1:10, 1] + 1], col = "red", pch=20)
+points(X[ans$matches[1:10, 2] + 1], col = "red", pch=15)
+points(X[1:10], col = "black")
 ```
