@@ -42,7 +42,8 @@ ans <- match_it(
 )
 ```
 
-The following figure shows how the match works for the first ten observations. Red and black points should match!
+The following figure shows how the match works for the first ten observations. Red and black points should
+match!
 
 ```{r}
 #| label: Visualize
